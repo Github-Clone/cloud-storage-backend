@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/home/app/web
+    ports:
+      - 8000:8000
+    networks:
+      - djangonetwork
+    links:
+      - db:db
+    depends_on:
+      - db
+    env_file:
+      - configurations/.env
+
+  db:
+    container_name: db
+    image: postgres:13
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=Xvkm24kmx4KZfgYikENW
+      - POSTGRES_USER=cloud_storage
+      - POSTGRES_DB=cloud_storage
+    networks:
+      - djangonetwork
+
+networks:
+  djangonetwork:
+      driver: bridge
